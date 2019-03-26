@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [eventBusIndex: 'com.bandeng.MyEventBusIndex']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //testImplementation 'junit:junit:4.12'
+    //androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    //androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compile(name: 'Base-Core-release', ext: 'aar')
+}
+
+
+apply plugin: 'maven'
+uploadArchives {
+    repositories.mavenDeployer {
+        //def mavenDirPath = file('F:\\mavendir') // 本地存放目录(自行选择)，可放在gradle.properties文件中引用
+        def mavenDirPath = file('/Users/bifeng/mavendir/Nunaios-Launcher-Tools/') // 本地存放目录(自行选择)，可放在gradle.properties文件中引用
+        repository(url: "file://${mavenDirPath.absolutePath}") // 必须双引号，单引号不会转义$
+        pom.project {
+            groupId "com.mgtv.nunaios.tabimpl" // 可以随意取，一般取包名
+            artifactId "tabimpl" // 可以随意取，一般取库的名字
+            version "1.0.0-SNAPSHOT" // 版本号
+        }
+    }
+}
+
+
+
+
+
